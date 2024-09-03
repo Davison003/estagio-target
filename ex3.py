@@ -1,15 +1,21 @@
-# NAO HOUVE JSON OU XML DISPONIVEL
+import json
 
-def calc_faturamento(vect: list[float]) ->tuple[float, float, int]:
-    maior_valor_faturamento = max(vect)
-    menor_valor_faturamento = min(vect)
+with open("./dados.json", "r") as file:
+    dados = json.load(file)
 
-    dias_com_faturamento_superior_media = len([fat for fat in vect if fat > (sum(vect) / len(vect))])
+def calc_faturamento(data):
+    valores = [x["valor"] for x in data]
+    maior_valor_faturamento = max(valores)
+    menor_valor_faturamento = min(valores)
+
+    avg = sum(valores) / len(valores)
+
+    dias_com_faturamento_superior_media = [x["dia"] for x in data if x["valor"] > avg]
 
     return (maior_valor_faturamento, menor_valor_faturamento, dias_com_faturamento_superior_media)
 
 
 
-fat_mensal = [67836.43, 36678.66, 29229.22, 27165.48, 19849.53]
 
-print(calc_faturamento(fat_mensal))
+
+print(calc_faturamento(dados))
